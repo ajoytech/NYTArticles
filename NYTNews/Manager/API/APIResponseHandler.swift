@@ -16,7 +16,7 @@ class APIResponseHandler {
      - Returns:
      - completion: callback closure
      */
-    static func handleArticleResult<T: Codable>(completion: @escaping (Result<T, CustomError>) -> Void) ->  ((Result<Data, CustomError>) -> Void) {
+    static func handleArticleResult<T: Codable>(_ completion: @escaping (Result<T, CustomError>) -> Void) ->  ((Result<Data, CustomError>) -> Void) {
         
         return { result in
             RunInBackground {
@@ -34,7 +34,6 @@ class APIResponseHandler {
                     completion(.failed(error))
                 }
             }
-            
         }
     }
     
@@ -46,20 +45,14 @@ class APIResponseHandler {
      - Returns:
      - completion: callback closure
      */
-    static func handleImageDownloadResult<T: Codable>(completion: @escaping (Result<T, CustomError>) -> Void) ->  ((Result<Data, CustomError>) -> Void) {
+    static func handleImageDownloadResult<T: Codable>(_ completion: @escaping (Result<T, CustomError>) -> Void) ->  ((Result<Data, CustomError>) -> Void) {
         
         return { result in
             RunInBackground {
                 switch result {
                 case .success(let data) :
-                    do {
-                        let data = data as! T
-                        completion(.success(data))
-                        
-                    }catch let error {
-                        print(error)
-                        completion(.failed(CustomError(type: .CannotDecodeData)))
-                    }
+                    let data = data as! T
+                    completion(.success(data))
                 case .failed(let error) :
                     completion(.failed(error))
                 }

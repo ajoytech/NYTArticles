@@ -21,8 +21,3 @@ struct ArticleCellViewModel {
     }
 }
 
-extension ArticleCellViewModel: Equatable {
-    static func ==(lhs: ArticleCellViewModel, rhs: ArticleCellViewModel) -> Bool {
-        return lhs.imageLink == rhs.imageLink || lhs.date == rhs.date
-    }
-}

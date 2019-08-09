@@ -9,6 +9,7 @@
 import Foundation
 
 typealias ArticleCompletionBlock = (Result<ArticleResponse, CustomError>) -> Void
+typealias DownloadImageCompletionBlock = (Result<Data, CustomError>) -> Void
 
 //API Result type declaration
 enum Result<T, E: Error> {
@@ -20,7 +21,7 @@ enum Result<T, E: Error> {
 protocol APIManagerProtocol {
     func fetchArticles(page: Int, completion: @escaping ArticleCompletionBlock)
     func searchArticles(searchKey: String, completion: @escaping ArticleCompletionBlock)
-    func downloadArticleImages(relativePath: String, completion: @escaping (Result<Data, CustomError>) -> Void)
+    func downloadArticleImages(relativePath: String, completion: @escaping DownloadImageCompletionBlock)
 }
 
 class APIManager: APIResponseHandler, APIManagerProtocol {
@@ -38,7 +39,9 @@ class APIManager: APIResponseHandler, APIManagerProtocol {
      */
     func fetchArticles(page: Int, completion: @escaping ArticleCompletionBlock) {
         print("Calling page :: \(page)")
-        APITask.getArticleTask(urlString: APIConfiguration.articleSearchBaseUrl, queryParameters: ["api-key": APIConfiguration.tokenKey, "page": String(page)], completion: APIResponseHandler.handleArticleResult(completion: completion))
+        APITask.getArticleTask(urlString: APIConfiguration.articleSearchBaseUrl,
+                                queryParameters: ["api-key": APIConfiguration.tokenKey, "page": String(page)],
+                                 completion: APIResponseHandler.handleArticleResult(completion))
         
     }
     
@@ -50,7 +53,9 @@ class APIManager: APIResponseHandler, APIManagerProtocol {
      - Returns:
      */
     func searchArticles(searchKey: String, completion: @escaping ArticleCompletionBlock) {
-        APITask.getArticleTask(urlString: APIConfiguration.articleSearchBaseUrl, queryParameters: ["api-key": APIConfiguration.tokenKey, "q": searchKey], completion: APIResponseHandler.handleArticleResult(completion: completion))
+        APITask.getArticleTask(urlString: APIConfiguration.articleSearchBaseUrl,
+                                queryParameters: ["api-key": APIConfiguration.tokenKey, "q": searchKey],
+                                completion: APIResponseHandler.handleArticleResult(completion))
     }
     
     
@@ -61,7 +66,9 @@ class APIManager: APIResponseHandler, APIManagerProtocol {
      - completion: callback closure
      - Returns:
      */
-    func downloadArticleImages(relativePath: String, completion: @escaping (Result<Data, CustomError>) -> Void) {
-        APITask.downloadImageTask(urlString: APIConfiguration.imageBaseUrl, pathComponent: relativePath, completion: APIResponseHandler.handleImageDownloadResult(completion: completion))
+    func downloadArticleImages(relativePath: String, completion: @escaping DownloadImageCompletionBlock) {
+        APITask.downloadImageTask(urlString: APIConfiguration.imageBaseUrl,
+                                   pathComponent: relativePath,
+                                   completion: APIResponseHandler.handleImageDownloadResult(completion))
     }
 }

@@ -8,34 +8,26 @@
 
 import UIKit
 
-protocol SearchKeyProtocol: class {
+protocol SearchArticleProtocol: class {
     func searchArticle(with selectedKey: String)
 }
 
 class SearchResultViewController: UITableViewController {
 
     var dataSource: [String] = []
-    weak var searchRCDelegate: SearchKeyProtocol?
+    weak var searchDelegate: SearchArticleProtocol?
     
-    init(delegate: SearchKeyProtocol) {
+    init(delegate: SearchArticleProtocol) {
         super.init(style: .plain)
-        searchRCDelegate = delegate
+        searchDelegate = delegate
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print("loading search result")
-        print(dataSource)
-    }
-    
     // MARK: - Table view data source
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return dataSource.count
     }
     
@@ -47,7 +39,7 @@ class SearchResultViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.searchRCDelegate?.searchArticle(with: dataSource[indexPath.row])
+        self.searchDelegate?.searchArticle(with: dataSource[indexPath.row])
     }
 
 }

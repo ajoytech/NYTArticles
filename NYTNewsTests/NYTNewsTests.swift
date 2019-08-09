@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import PGArticles
+@testable import NYTNews
 
 class NYTNewsTests: XCTestCase {
 

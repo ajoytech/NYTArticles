@@ -27,26 +27,26 @@ class ArticleListViewController: UIViewController {
         articleListView.estimatedRowHeight = 300
         self.title = "NYT News"
         
-       searchKeyList.reserveCapacity(2)
+       searchKeyList.reserveCapacity(10)
         //ViewModel listener
         viewModel.listener = { [weak self] (error, indexPathList) in
-            
+            guard let self = self else { return }
             if let error = error {
                 RunOnMainThread {
-                    self?.activityIndicator.stopAnimating()
-                    self?.showAlertWith(error.description ?? "Oops! some error occured, please try again.")
+                    self.activityIndicator.stopAnimating()
+                    self.showAlertWith(error.description ?? "Oops! some error occured, please try again.")
                 }
             }else {
                 RunOnMainThread {
-                    self?.searchBarController.searchResultsController?.view.isHidden = true
-                    self?.activityIndicator.stopAnimating()
+                    self.searchBarController.searchResultsController?.view.isHidden = true
+                    self.activityIndicator.stopAnimating()
                     if let indexList = indexPathList {
-                        guard let reloadIndexes = self?.indexPathsToReload(indexList) else { return }
-                        self?.articleListView.beginUpdates()
-                        self?.articleListView.reloadRows(at: reloadIndexes, with: .bottom)
-                        self?.articleListView.endUpdates()
+                        let reloadIndexes = self.indexPathsToReload(indexList)
+                        self.articleListView.beginUpdates()
+                        self.articleListView.reloadRows(at: reloadIndexes, with: .bottom)
+                        self.articleListView.endUpdates()
                     }else {
-                        self?.articleListView.reloadData()
+                        self.articleListView.reloadData()
                     }
                 }
             }
@@ -80,7 +80,7 @@ class ArticleListViewController: UIViewController {
     
     
     func isLoadingCell(for indexPath: IndexPath) -> Bool {
-        return indexPath.row >= viewModel.currentArticles()
+        return indexPath.row >= viewModel.currentArticleCount
     }
     
     func indexPathsToReload(_ indexPaths: [IndexPath]) -> [IndexPath] {
@@ -97,7 +97,7 @@ class ArticleListViewController: UIViewController {
 //MARK: Table view datasource
 extension ArticleListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.totalArticles()
+        return viewModel.totalArticlesCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -106,27 +106,25 @@ extension ArticleListViewController: UITableViewDataSource {
         if isLoadingCell(for: indexPath) {
             articleCell.setData(with: nil)
         }else {
-            let dataViewModel = viewModel.getModel(index: indexPath.row)
+            let dataViewModel = viewModel.articleCellViewModel(at: indexPath.row)
             articleCell.setData(with: dataViewModel)
         }
         return articleCell
-        
     }
 }
 
 //MARK: Table view delegate
 extension ArticleListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == viewModel.currentArticles() - 1 {
+        if indexPath.row == viewModel.currentArticleCount - 1 {
             RunInBackground {
                 self.viewModel.fetchArticles()
             }
-            
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedViewModel = viewModel.getModel(index: indexPath.row)
+        let selectedViewModel = viewModel.articleCellViewModel(at: indexPath.row)
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         guard let articleDetailController = storyBoard.instantiateViewController(withIdentifier: "articleDetailsVC") as? ArticleDetailViewController else {
             showAlertWith("Error in loading article detail view controller")
@@ -166,7 +164,6 @@ extension ArticleListViewController: UISearchBarDelegate {
             viewModel.fetchArticles()
         }
     }
-    
 }
 
 //MARK: UISearchControllerDelegate delegate
@@ -186,7 +183,7 @@ extension ArticleListViewController: UISearchControllerDelegate {
 }
 
 //MARK: SearchKeyProtocol delegate
-extension ArticleListViewController: SearchKeyProtocol {
+extension ArticleListViewController: SearchArticleProtocol {
     func searchArticle(with selectedKey: String) {
         print("Search from selected key:: \(selectedKey)")
         viewModel.searchArticles(selectedKey)

@@ -53,6 +53,7 @@ struct MetaInfo: Codable {
         case total = "hits"
     }
 }
+
 struct Headline: Codable {
     var main: String?
 }

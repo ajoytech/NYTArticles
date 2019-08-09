@@ -28,6 +28,7 @@
 		8F0A6F2E22E8E3C900C00B9D /* ArticleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0A6F2D22E8E3C900C00B9D /* ArticleDetailViewController.swift */; };
 		8F0A6F3222EA289A00C00B9D /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0A6F3122EA289A00C00B9D /* SearchResultViewController.swift */; };
 		8F0A6F3422EA45E100C00B9D /* CustomErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0A6F3322EA45E100C00B9D /* CustomErrorTests.swift */; };
+		F0B4DC5022FDA3B400497AD6 /* ArticleViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B4DC4F22FDA3B400497AD6 /* ArticleViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		8F0A6F2D22E8E3C900C00B9D /* ArticleDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailViewController.swift; sourceTree = "<group>"; };
 		8F0A6F3122EA289A00C00B9D /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		8F0A6F3322EA45E100C00B9D /* CustomErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomErrorTests.swift; sourceTree = "<group>"; };
+		F0B4DC4F22FDA3B400497AD6 /* ArticleViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				8F0A6EFA22E75AA100C00B9D /* NYTNewsTests.swift */,
 				8F0A6EFC22E75AA100C00B9D /* Info.plist */,
 				8F0A6F3322EA45E100C00B9D /* CustomErrorTests.swift */,
+				F0B4DC4F22FDA3B400497AD6 /* ArticleViewModelTests.swift */,
 			);
 			path = NYTNewsTests;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 			files = (
 				8F0A6EFB22E75AA100C00B9D /* NYTNewsTests.swift in Sources */,
 				8F0A6F3422EA45E100C00B9D /* CustomErrorTests.swift in Sources */,
+				F0B4DC5022FDA3B400497AD6 /* ArticleViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,7 +559,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = STHZ2A95RL;
-				INFOPLIST_FILE = PGArticlesTests/Info.plist;
+				INFOPLIST_FILE = NYTNewsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -576,7 +580,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = STHZ2A95RL;
-				INFOPLIST_FILE = PGArticlesTests/Info.plist;
+				INFOPLIST_FILE = NYTNewsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

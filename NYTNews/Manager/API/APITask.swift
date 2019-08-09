@@ -8,7 +8,7 @@
 
 import Foundation
 
-class APITask {
+struct APITask {
     
     /**
      This method will create URLSession task for fetching/searching articles
@@ -20,11 +20,17 @@ class APITask {
      - Returns:
      - url session: URLSession
      */
-    static func getArticleTask(urlString: String, queryParameters: [String: String], session: URLSession = URLSession(configuration: .default), completion: @escaping (Result<Data, CustomError>) -> Void) {
+    static func getArticleTask(
+            urlString: String,
+            queryParameters: [String: String],
+            session: URLSession = URLSession(configuration: .default),
+            completion: @escaping (Result<Data, CustomError>) -> Void
+        ) {
         
         guard let url = URL(string: urlString) else {
             completion(.failed(CustomError(type: .MissingBaseURL)))
-            return }
+            return
+        }
         
         guard let request = APIRequest.buildArticleRequest(url: url, method: .GET, queryDict: queryParameters) else {
             completion(.failed(CustomError(type: .InvalidInput)))
@@ -41,6 +47,8 @@ class APITask {
                 //check if data present
                 if let data = data {
                     completion(.success(data))
+                }else {
+                    completion(.failed(CustomError(type: .RemoteServiceReturnedNilData)))
                 }
             }
             articleTask.resume()
@@ -59,11 +67,17 @@ class APITask {
      - Returns:
      - url session: URLSession
      */
-    static func downloadImageTask(urlString: String, pathComponent: String, session: URLSession = URLSession(configuration: .default), completion: @escaping (Result<Data, CustomError>) -> Void) {
+    static func downloadImageTask(
+            urlString: String,
+            pathComponent: String,
+            session: URLSession = URLSession(configuration: .default),
+            completion: @escaping (Result<Data, CustomError>) -> Void
+        ) {
         
         guard var url = URL(string: urlString) else {
             completion(.failed(CustomError(type: .MissingBaseURL)))
-            return }
+            return
+        }
         url = url.appendingPathComponent(pathComponent)
         guard let request = APIRequest.buildImageRequest(imageUrl: url) else {
             completion(.failed(CustomError(type: .InvalidInput)))
@@ -76,10 +90,11 @@ class APITask {
                     completion(.failed(CustomError(error: apiError)))
                     return
                 }
-                
                 //check if data present
                 if let data = data {
                     completion(.success(data))
+                }else {
+                    completion(.failed(CustomError(type: .RemoteServiceReturnedNilData)))
                 }
             }
             articleTask.resume()

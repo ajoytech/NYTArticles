@@ -9,7 +9,7 @@
 
 import Foundation
 
-typealias ModelUpdated = ((CustomError?, [IndexPath]?) -> Void)
+typealias viewModelListener = ((CustomError?, [IndexPath]?) -> Void)
 
 class ArticleViewModel {
     private var apiManager: APIManagerProtocol
@@ -17,7 +17,13 @@ class ArticleViewModel {
     private var isCallInProgress: Bool = false
     private var total: Int = 0
     var currentArticlePage: Int = 1
-    var listener: ModelUpdated?
+    var listener: viewModelListener?
+    var currentArticleCount: Int {
+        return dataModel?.count ?? 0
+    }
+    var totalArticlesCount: Int {
+        return total
+    }
     
     init(networkManager: APIManagerProtocol = APIManager.shared) {
         self.apiManager = networkManager
@@ -29,14 +35,15 @@ class ArticleViewModel {
         isCallInProgress = true
         print("calling search article :: \(searchKey)")
         apiManager.searchArticles(searchKey: searchKey) { [weak self] (result) in
-            self?.isCallInProgress = false
+            guard let self = self else { return }
+            self.isCallInProgress = false
             switch result {
-            case .success(let data) :
-                guard let dataModel = self?.buildArticleCellModel(articles: data.response.articles) else { return }
-                self?.dataModel = dataModel
-                self?.listener?(.none, .none)
-            case .failed(let error) :
-                self?.listener?(error, nil)
+                case .success(let data) :
+                    let dataModel = self.buildArticleCellModel(data.response.articles)
+                    self.dataModel = dataModel
+                    self.listener?(.none, .none)
+                case .failed(let error) :
+                    self.listener?(error, nil)
             }
         }
     }
@@ -46,29 +53,29 @@ class ArticleViewModel {
         isCallInProgress = true
         RunInBackground {
             self.apiManager.fetchArticles(page: self.currentArticlePage) { [weak self] (result) in
-                self?.isCallInProgress = false
+                guard let self = self else { return }
+                self.isCallInProgress = false
                 switch result {
                     case .success(let data) :
-                        self?.currentArticlePage += 1
-                        self?.total = self?.total == 0 ? data.response.pageInfo.total : (self?.total)!
-                        guard let dataModel = self?.buildArticleCellModel(articles: data.response.articles) else { return }
-                        if let page = self?.currentArticlePage,
-                            page > 2,
-                            let model = self?.dataModel {
-                            self?.dataModel.append(contentsOf: model)
-                            self?.listener?(nil, self?.indexPathToReload(dataModel.count))
+                        self.currentArticlePage += 1
+                        self.total = self.total == 0 ? data.response.pageInfo.total : self.total
+                        let cellModel = self.buildArticleCellModel(data.response.articles)
+                        if self.currentArticlePage > 2,
+                            let model = self.dataModel {
+                            self.dataModel.append(contentsOf: model)
+                            self.listener?(nil, self.indexPathToReload(cellModel.count))
                         }else {
-                            self?.dataModel = dataModel
-                            self?.listener?(.none, .none)
+                            self.dataModel = cellModel
+                            self.listener?(.none, .none)
                         }
                     case .failed(let error) :
-                        self?.listener?(error, nil)
+                        self.listener?(error, nil)
                 }
             }
         }
     }
     
-    private func buildArticleCellModel(articles: [Article]) -> [ArticleCellViewModel] {
+    private func buildArticleCellModel(_ articles: [Article]) -> [ArticleCellViewModel] {
         var articleCellModel: [ArticleCellViewModel] = []
         
         for article in articles {
@@ -83,15 +90,8 @@ class ArticleViewModel {
         return (startIndex..<endIndex).map { IndexPath(row: $0, section: 0) }
     }
     
-    public func currentArticles() -> Int {
-        return dataModel?.count ?? 0
-    }
     
-    public func totalArticles() -> Int {
-        return total
-    }
-    
-    public func getModel(index: Int) -> ArticleCellViewModel? {
+    public func articleCellViewModel(at index: Int) -> ArticleCellViewModel? {
         return dataModel?[index]
     }
 }

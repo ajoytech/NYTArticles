@@ -28,8 +28,11 @@ class APIRequest {
      - Returns:
      - URLRequest: url request
      */
-    static func buildArticleRequest(url: URL, method: HTTPMethod, queryDict: [String: String], cachePolicy:
-        URLRequest.CachePolicy = .useProtocolCachePolicy, timeout: TimeInterval = 60) -> URLRequest? {
+    static func buildArticleRequest(url: URL,
+                                     method: HTTPMethod,
+                                     queryDict: [String: String],
+                                     cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy,
+                                     timeout: TimeInterval = 60) -> URLRequest? {
         var queryItems: [URLQueryItem] = []
         for query in queryDict {
             let item = URLQueryItem(name: query.key, value: query.value)
@@ -38,7 +41,9 @@ class APIRequest {
         
         var urlComponent = URLComponents(url: url, resolvingAgainstBaseURL: false)
         urlComponent?.queryItems = queryItems
-        guard let finalUrl = urlComponent?.url else { return nil }
+        guard let finalUrl = urlComponent?.url else {
+            return nil
+        }
         
         var urlRequest = URLRequest(url: finalUrl, cachePolicy: cachePolicy, timeoutInterval: timeout)
         urlRequest.httpMethod = method.rawValue
@@ -56,7 +61,10 @@ class APIRequest {
      - Returns:
      - URLRequest: request object
      */
-    static func buildImageRequest(imageUrl: URL, method: HTTPMethod = .GET, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, timeOut: TimeInterval = 60) -> URLRequest? {
+    static func buildImageRequest(imageUrl: URL,
+                                   method: HTTPMethod = .GET,
+                                   cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy,
+                                   timeOut: TimeInterval = 60) -> URLRequest? {
         var urlRequest = URLRequest(url: imageUrl, cachePolicy: cachePolicy, timeoutInterval: timeOut)
         urlRequest.httpMethod = method.rawValue
         return urlRequest

@@ -8,6 +8,13 @@
 
 import Foundation
 
+//Error attribute requirement
+protocol CustomErrorProtocol {
+    var title: String { get }
+    var description: String? { get }
+    var type: ErrorType { get }
+}
+
 struct CustomError: Error, CustomErrorProtocol {
     var type: ErrorType
     
@@ -15,43 +22,36 @@ struct CustomError: Error, CustomErrorProtocol {
     
     var description: String?
     
-    public var innerError: NSError? = nil
+    var innerError: NSError? = nil
     
-    public var debugDescription: String {
+    var debugDescription: String {
         let localizedDescription = self.localizedDescription
         let innerError = "\nInner Error: " + self.innerError.debugDescription
         return localizedDescription + innerError
     }
     
-    public var localizedDescription: String {
+    var localizedDescription: String {
         let titl = NSLocalizedString(title, comment: "")
         let desc = NSLocalizedString(description ?? "", comment: "")
         
         return titl + " " + desc
     }
     
-    public init(type: ErrorType, title: String = "", description: String? = nil) {
+    init(type: ErrorType, title: String = "", description: String? = nil) {
         self.type = type
         self.description = description ?? type.description()
         self.title = title
     }
     
-    public init(error: NSError) {
+    init(error: NSError) {
         var type : ErrorType = .Unknown
         switch (Int32(error.code), error.domain) {
-        case (CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue, "NSURLErrorDomain") : type = .NoInternet
-        default: type = .Unknown
+            case (CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue, "NSURLErrorDomain") : type = .NoInternet
+            default: type = .Unknown
         }
         self.init(type: type)
         innerError = error
     }
-}
-
-//Error attribute requirement
-protocol CustomErrorProtocol {
-    var title: String { get }
-    var description: String? { get }
-    var type: ErrorType { get }
 }
 
 //different custom error types
