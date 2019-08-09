@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PGArticles/Extension/UIImageView+SetImage.swift"
+            timestampString = "585778812.547228"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "setImage(from:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (PGArticles.Result&lt;Foundation.Data, PGArticles.CustomError&gt;) -&gt; () in closure #2 () -&gt; () in (extension in PGArticles):__C.UIImageView.setImage(from: Swift.String) -&gt; ()"
+                  moduleName = "PGArticles"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ajoykumar/Projects/iOS/Assignments/PGArticles/PGArticles/Extension/UIImageView+SetImage.swift"
+                  timestampString = "585778478.828474"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "33"
+                  endingLineNumber = "33"
+                  offsetFromSymbolStart = "102">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (PGArticles.Result&lt;Foundation.Data, PGArticles.CustomError&gt;) -&gt; () in closure #2 () -&gt; () in (extension in PGArticles):__C.UIImageView.setImage(from: Swift.String) -&gt; ()"
+                  moduleName = "PGArticles"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ajoykumar/Projects/iOS/Assignments/PGArticles/PGArticles/Extension/UIImageView+SetImage.swift"
+                  timestampString = "585778478.832002"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "33"
+                  endingLineNumber = "33"
+                  offsetFromSymbolStart = "142">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
